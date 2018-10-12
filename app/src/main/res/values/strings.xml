@@ -1,3 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Baking App</string>
+    <string name="mixing_bowl">Mixing Bowl</string>
+    <string name="servings">Servings:</string>
 </resources>
