@@ -1,6 +1,7 @@
 package com.swdave.bakingapp.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -9,23 +10,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.swdave.bakingapp.R;
+import com.swdave.bakingapp.activites.DetailActivity;
 import com.swdave.bakingapp.model.Recipe;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipeViewHolder> {
 
+    private static final String TAG = "RecipesAdapter";
+
     private Context mContext;
-    private List<Recipe> mRecipeList = new ArrayList<>();
+    private List<Recipe> mRecipeList;
+
 
     public RecipesAdapter(Context context, List<Recipe> recipes) {
         this.mContext = context;
@@ -42,7 +44,7 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipeVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecipeViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull RecipeViewHolder viewHolder, final int position) {
 
         Glide.with(mContext)
                 .load(R.drawable.mixing)
@@ -52,15 +54,20 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipeVi
                 .load(R.drawable.ic_keyboard_arrow_right_black)
                 .into(viewHolder.arrowRight);
 
-//         TODO : Data not coming though. Look into it more
-//        viewHolder.recipeName.setText(mRecipeList.get(position).getName());
-//        viewHolder.servingsQuantity.setText(mRecipeList.get(position).getServings());
+        viewHolder.recipeName.setText(mRecipeList.get(position).getName());
+        viewHolder.servingsQuantity.setText(mRecipeList.get(position).getServings());
+
 
 
         viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "Clicked", Toast.LENGTH_SHORT).show();
+                Recipe recipe = mRecipeList.get(position);
+                Intent intent = new Intent(mContext, DetailActivity.class);
+                ArrayList<Recipe> recipeArrayList = new ArrayList<>();
+                recipeArrayList.add(recipe);
+                intent.putParcelableArrayListExtra("recipes", recipeArrayList);
+                mContext.startActivity(intent);
             }
         });
 
@@ -71,24 +78,23 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipeVi
         return mRecipeList.size();
     }
 
-    public static class RecipeViewHolder extends ViewHolder{
+    static class RecipeViewHolder extends ViewHolder{
         ImageView bowl, arrowRight;
-        TextView recipeName, servings, servingsQuantity;
+        TextView recipeName;
+        TextView servings;
+        TextView servingsQuantity;
         CardView parentLayout;
 
-        public RecipeViewHolder(@NonNull View itemView) {
+        RecipeViewHolder(@NonNull View itemView) {
 
             super(itemView);
             arrowRight = itemView.findViewById(R.id.arrow_right);
             bowl = itemView.findViewById(R.id.recipe_iv);
             recipeName = itemView.findViewById(R.id.recipe_tv);
             servings = itemView.findViewById(R.id.servings_title);
-            servingsQuantity = itemView.findViewById(R.id.servings_tv);
+            servingsQuantity = itemView.findViewById(R.id.servings_quantity_tv);
             parentLayout = itemView.findViewById(R.id.recipe_cv);
         }
     }
-    public void setRecipesData(List<Recipe> recipesData) {
-        mRecipeList = recipesData;
-        notifyDataSetChanged();
-    }
+
 }

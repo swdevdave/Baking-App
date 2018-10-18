@@ -3,4 +3,5 @@
     <string name="app_name">Baking App</string>
     <string name="mixing_bowl">Mixing Bowl</string>
     <string name="servings">Servings:</string>
+    <string name="arrow_right">Arrow Right</string>
 </resources>

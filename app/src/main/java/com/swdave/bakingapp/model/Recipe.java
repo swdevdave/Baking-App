@@ -1,59 +1,85 @@
 package com.swdave.bakingapp.model;
 
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Recipe implements Parcelable {
 
     @SerializedName("id")
-    private int id;
-    @SerializedName("name")
-    private String name;
-    @SerializedName("ingredients")
-    private ArrayList<Ingredient> ingredients;
-    @SerializedName("steps")
-    private ArrayList<Step> steps;
-    @SerializedName("servings")
-    private int servings;
-    @SerializedName("image")
-    private String imageURL;
+    @Expose
+    private Integer id;
 
-    public Recipe(int id, String name, ArrayList<Ingredient> ingredients, ArrayList<Step> steps, int servings, String imageURL) {
-        this.id = id;
-        this.name = name;
-        this.ingredients = ingredients;
-        this.steps = steps;
-        this.servings = servings;
-        this.imageURL = imageURL;
+    @SerializedName("name")
+    @Expose
+    private String name;
+
+    @SerializedName("ingredients")
+    @Expose
+    private List<Ingredient> ingredients = null;
+
+    @SerializedName("steps")
+    @Expose
+    private List<Step> steps = null;
+
+    @SerializedName("servings")
+    @Expose
+    private String servings;
+
+    @SerializedName("image")
+    @Expose
+    private String image;
+
+    public Integer getId() {
+        return id;
     }
 
-    public int getId() {
-        return id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
-    public ArrayList<Ingredient> getIngredients() {
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public ArrayList<Step> getSteps() {
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public List<Step> getSteps() {
         return steps;
     }
 
-    public int getServings() {
+    public void setSteps(List<Step> steps) {
+        this.steps = steps;
+    }
+
+    public String getServings() {
         return servings;
     }
 
-    public String getImageURL() {
-        return imageURL;
+    public void setServings(String servings) {
+        this.servings = servings;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
 
@@ -64,22 +90,24 @@ public class Recipe implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.id);
+        dest.writeValue(this.id);
         dest.writeString(this.name);
         dest.writeTypedList(this.ingredients);
-        dest.writeList(this.steps);
-        dest.writeInt(this.servings);
-        dest.writeString(this.imageURL);
+        dest.writeTypedList(this.steps);
+        dest.writeString(this.servings);
+        dest.writeString(this.image);
+    }
+
+    public Recipe() {
     }
 
     protected Recipe(Parcel in) {
-        this.id = in.readInt();
+        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         this.name = in.readString();
         this.ingredients = in.createTypedArrayList(Ingredient.CREATOR);
-        this.steps = new ArrayList<>();
-        in.readList(this.steps, Step.class.getClassLoader());
-        this.servings = in.readInt();
-        this.imageURL = in.readString();
+        this.steps = in.createTypedArrayList(Step.CREATOR);
+        this.servings = in.readString();
+        this.image = in.readString();
     }
 
     public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {

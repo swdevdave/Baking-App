@@ -54,7 +54,8 @@
                 android:textColor="@android:color/white" />
 
             <TextView
-                android:id="@+id/servings_tv"
+                android:layout_marginStart="2dp"
+                android:id="@+id/servings_quantity_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/card_view_text_container_height"
                 android:layout_below="@id/recipe_tv"
@@ -70,7 +71,7 @@
                 android:layout_height="24dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:contentDescription="Arrow Right"
+                android:contentDescription="@string/arrow_right"
                 android:src="@drawable/ic_keyboard_arrow_right_black" />
 
         </RelativeLayout>
