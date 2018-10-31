@@ -33,6 +33,8 @@ public class DetailActivity extends AppCompatActivity {
 
             Log.d(TAG, "onCreate: Finished ");
 
+            
+
 
     }
 }
